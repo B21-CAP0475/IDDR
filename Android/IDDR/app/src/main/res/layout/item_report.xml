@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_poster"
+        android:layout_width="80dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_poster_movie_image"
+            android:layout_width="80dp"
+            android:layout_height="70dp"
+            android:src="@drawable/jalanrusak1"
+            android:scaleType="centerCrop"
+            android:contentDescription="@null" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/tv_title_report"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/montserratmedium"
+        android:textColor="@color/blue_second"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:singleLine="true"
+        app:layout_constraintStart_toEndOf="@+id/cv_poster"
+        app:layout_constraintTop_toTopOf="@+id/cv_poster"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Title." />
+
+    <TextView
+        android:id="@+id/tv_detail_report"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:layout_marginTop="3dp"
+        android:fontFamily="@font/montserratlight"
+        android:textColor="@color/blue_second"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/cv_poster"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_report"
+        tools:text="Short Detail" />
+
+    <ImageView
+        android:id="@+id/iv_location"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:src="@drawable/ic_baseline_location_on_24"
+        app:layout_constraintStart_toEndOf="@id/cv_poster"
+        app:layout_constraintBottom_toBottomOf="@id/cv_poster"
+        android:layout_marginStart="12dp"
+        app:tint="@color/blue_third" />
+
+    <TextView
+        android:id="@+id/tv_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserratlight"
+        android:textColor="@color/blue_third"
+        android:textSize="10sp"
+        android:layout_marginStart="5dp"
+        app:layout_constraintStart_toEndOf="@id/iv_location"
+        app:layout_constraintEnd_toStartOf="@id/iv_time"
+        app:layout_constraintTop_toTopOf="@id/iv_location"
+        app:layout_constraintBottom_toBottomOf="@id/iv_location"
+        tools:text="Location" />
+
+    <ImageView
+        android:id="@+id/iv_time"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:src="@drawable/ic_baseline_access_time_24"
+        app:layout_constraintStart_toEndOf="@id/tv_location"
+        app:layout_constraintTop_toTopOf="@id/iv_location"
+        app:layout_constraintBottom_toBottomOf="@id/iv_location"
+        android:layout_marginStart="24dp"
+        app:tint="@color/blue_third" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserratlight"
+        android:textColor="@color/blue_third"
+        android:textSize="10sp"
+        android:layout_marginStart="5dp"
+        app:layout_constraintStart_toEndOf="@id/iv_time"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/iv_location"
+        app:layout_constraintBottom_toBottomOf="@id/iv_location"
+        tools:text="Time" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
