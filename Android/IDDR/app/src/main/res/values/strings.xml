@@ -8,4 +8,8 @@
     <string name="profiledetail">Tentang</string>
     <string name="reported">Laporan</string>
     <string name="app_desc">Infrastructure Damage Detection and Reporting</string>
+    <string name="tv_take_photo">Ambil Foto</string>
+    <string name="tv_description">Ambil gambar yang jelas seperti contoh di bawah ini :</string>
+    <string name="tv_placeholder">Photo placeholder</string>
+    <string name="kirim">Kirim</string>
 </resources>

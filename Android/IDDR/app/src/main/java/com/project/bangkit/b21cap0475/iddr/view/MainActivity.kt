@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.fabAddReport.setOnClickListener {
-            startActivity(Intent(this, DetectorActivity::class.java))
+            startActivity(Intent(this, DetectActivity::class.java))
         }
     }
 

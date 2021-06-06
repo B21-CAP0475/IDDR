@@ -11,11 +11,11 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="Theme.TVMov.NoActionBar" parent="Theme.IDDR">
+    <style name="Theme.IDDR.NoActionBar" parent="Theme.IDDR">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
