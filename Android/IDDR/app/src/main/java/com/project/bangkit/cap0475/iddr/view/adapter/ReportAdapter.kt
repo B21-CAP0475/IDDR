@@ -1,10 +1,10 @@
-package com.project.bangkit.b21cap0475.iddr.view.adapter
+package com.project.bangkit.cap0475.iddr.view.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.project.bangkit.b21cap0475.iddr.databinding.ItemReportBinding
-import com.project.bangkit.b21cap0475.iddr.model.data.ReportEntity
+import com.project.bangkit.cap0475.iddr.databinding.ItemReportBinding
+import com.project.bangkit.cap0475.iddr.model.data.ReportEntity
 
 class ReportAdapter : RecyclerView.Adapter<ReportAdapter.ReportViewHolder>() {
 

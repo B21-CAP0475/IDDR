@@ -1,4 +1,4 @@
-package com.project.bangkit.b21cap0475.iddr.view.fragment
+package com.project.bangkit.cap0475.iddr.view.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,10 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.project.bangkit.b21cap0475.iddr.databinding.FragmentHomeBinding
-import com.project.bangkit.b21cap0475.iddr.view.DetailActivity
-import com.project.bangkit.b21cap0475.iddr.view.adapter.ReportAdapter
-import com.project.bangkit.b21cap0475.iddr.viewmodel.ReportViewModel
+import com.project.bangkit.cap0475.iddr.databinding.FragmentHomeBinding
+import com.project.bangkit.cap0475.iddr.view.DetailActivity
+import com.project.bangkit.cap0475.iddr.view.adapter.ReportAdapter
+import com.project.bangkit.cap0475.iddr.viewmodel.ReportViewModel
 
 class HomeFragment : Fragment(), ReportAdapter.OnItemClickCallback {
 

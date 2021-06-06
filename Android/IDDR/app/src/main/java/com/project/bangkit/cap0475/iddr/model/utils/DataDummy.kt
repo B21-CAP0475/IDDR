@@ -1,6 +1,6 @@
-package com.project.bangkit.b21cap0475.iddr.model.utils
+package com.project.bangkit.cap0475.iddr.model.utils
 
-import com.project.bangkit.b21cap0475.iddr.model.data.ReportEntity
+import com.project.bangkit.cap0475.iddr.model.data.ReportEntity
 
 object DataDummy {
 

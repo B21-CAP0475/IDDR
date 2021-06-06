@@ -1,7 +1,6 @@
-package com.project.bangkit.b21cap0475.iddr.view.fragment
+package com.project.bangkit.cap0475.iddr.view.fragment
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -12,11 +11,11 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.project.bangkit.b21cap0475.iddr.R
-import com.project.bangkit.b21cap0475.iddr.databinding.FragmentAccountBinding
-import com.project.bangkit.b21cap0475.iddr.databinding.LayoutHeaderProfileBinding
-import com.project.bangkit.b21cap0475.iddr.view.LoginActivity
-import com.project.bangkit.b21cap0475.iddr.view.adapter.SectionsPagerAdapter
+import com.project.bangkit.cap0475.iddr.databinding.FragmentAccountBinding
+import com.project.bangkit.cap0475.iddr.databinding.LayoutHeaderProfileBinding
+import com.project.bangkit.cap0475.iddr.R
+import com.project.bangkit.cap0475.iddr.view.LoginActivity
+import com.project.bangkit.cap0475.iddr.view.adapter.SectionsPagerAdapter
 import java.util.*
 
 class AccountFragment : Fragment() {

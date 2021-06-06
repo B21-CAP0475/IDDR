@@ -1,14 +1,14 @@
-package com.project.bangkit.b21cap0475.iddr.view
+package com.project.bangkit.cap0475.iddr.view
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
-import com.project.bangkit.b21cap0475.iddr.R
-import com.project.bangkit.b21cap0475.iddr.databinding.ActivityMainBinding
-import com.project.bangkit.b21cap0475.iddr.view.fragment.AccountFragment
-import com.project.bangkit.b21cap0475.iddr.view.fragment.HomeFragment
+import com.project.bangkit.cap0475.iddr.databinding.ActivityMainBinding
+import com.project.bangkit.cap0475.iddr.R
+import com.project.bangkit.cap0475.iddr.view.fragment.AccountFragment
+import com.project.bangkit.cap0475.iddr.view.fragment.HomeFragment
 
 class MainActivity : AppCompatActivity() {
 

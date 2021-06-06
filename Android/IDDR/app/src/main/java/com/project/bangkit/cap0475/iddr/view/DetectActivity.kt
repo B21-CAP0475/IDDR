@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.project.bangkit.b21cap0475.iddr.view
+package com.project.bangkit.cap0475.iddr.view
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
@@ -29,8 +29,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
-import com.project.bangkit.b21cap0475.iddr.R
-import com.project.bangkit.b21cap0475.iddr.databinding.ActivityDetectBinding
+import com.project.bangkit.cap0475.iddr.R
+import com.project.bangkit.cap0475.iddr.databinding.ActivityDetectBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.tensorflow.lite.support.image.TensorImage
@@ -212,7 +212,7 @@ class DetectActivity : AppCompatActivity(), View.OnClickListener {
                 photoFile?.also {
                     val photoURI: Uri = FileProvider.getUriForFile(
                         this,
-                        "com.project.bangkit.b21cap0475.iddr.fileprovider",
+                        "com.project.bangkit.cap0475.iddr.fileprovider",
                         it
                     )
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)

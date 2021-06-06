@@ -1,13 +1,13 @@
-package com.project.bangkit.b21cap0475.iddr.view.adapter
+package com.project.bangkit.cap0475.iddr.view.adapter
 
 import android.content.Context
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.project.bangkit.b21cap0475.iddr.R
-import com.project.bangkit.b21cap0475.iddr.view.fragment.ProfileDetailFragment
-import com.project.bangkit.b21cap0475.iddr.view.fragment.ReportedFragment
+import com.project.bangkit.cap0475.iddr.R
+import com.project.bangkit.cap0475.iddr.view.fragment.ProfileDetailFragment
+import com.project.bangkit.cap0475.iddr.view.fragment.ReportedFragment
 
 
 /**

@@ -1,4 +1,4 @@
-package com.project.bangkit.b21cap0475.iddr.view
+package com.project.bangkit.cap0475.iddr.view
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -10,8 +10,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.project.bangkit.b21cap0475.iddr.R
-import com.project.bangkit.b21cap0475.iddr.databinding.ActivityLoginBinding
+import com.project.bangkit.cap0475.iddr.databinding.ActivityLoginBinding
+import com.project.bangkit.cap0475.iddr.R
 import java.lang.Exception
 
 class LoginActivity : AppCompatActivity() {

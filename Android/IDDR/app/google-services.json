@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "28578248884",
-    "project_id": "iddr-7b5ca",
-    "storage_bucket": "iddr-7b5ca.appspot.com"
+    "project_number": "39927288418",
+    "project_id": "iddr-313506",
+    "storage_bucket": "iddr-313506.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:28578248884:android:940351cdd88103b7c47fe1",
+        "mobilesdk_app_id": "1:39927288418:android:99a83f157c46668759373b",
         "android_client_info": {
-          "package_name": "com.project.bangkit.b21cap0475.iddr"
+          "package_name": "com.project.bangkit.cap0475.iddr"
         }
       },
       "oauth_client": [
         {
-          "client_id": "28578248884-ql9qhgbcg7k768l824t724kehug1hcg6.apps.googleusercontent.com",
+          "client_id": "39927288418-m7saq2feo52mofvrvhbuj62s4nnt6q5b.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.project.bangkit.b21cap0475.iddr",
+            "package_name": "com.project.bangkit.cap0475.iddr",
             "certificate_hash": "beb7998b6941384b64ed3cc2c686bc3aa6df9fbb"
           }
         },
         {
-          "client_id": "28578248884-n0jauchdseiuochjg9oaoda4msmitit0.apps.googleusercontent.com",
+          "client_id": "39927288418-m7k6ro80ihci76v8i0jnpmp6ud6lh816.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDhC-F7U68x1GHPOiCcSDe5FJuNSWzb6G0"
+          "current_key": "AIzaSyDdVpvngruB4Fzh5rWsKmKBpCnLjmf1d_s"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "28578248884-n0jauchdseiuochjg9oaoda4msmitit0.apps.googleusercontent.com",
+              "client_id": "39927288418-m7k6ro80ihci76v8i0jnpmp6ud6lh816.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

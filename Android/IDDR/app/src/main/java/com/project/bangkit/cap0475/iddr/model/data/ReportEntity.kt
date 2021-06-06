@@ -1,4 +1,4 @@
-package com.project.bangkit.b21cap0475.iddr.model.data
+package com.project.bangkit.cap0475.iddr.model.data
 
 data class ReportEntity (
     val id: Int,

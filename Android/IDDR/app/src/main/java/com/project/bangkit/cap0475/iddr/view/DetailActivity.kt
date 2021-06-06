@@ -1,12 +1,11 @@
-package com.project.bangkit.b21cap0475.iddr.view
+package com.project.bangkit.cap0475.iddr.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.project.bangkit.b21cap0475.iddr.R
-import com.project.bangkit.b21cap0475.iddr.databinding.ActivityDetailBinding
-import com.project.bangkit.b21cap0475.iddr.model.data.ReportEntity
-import com.project.bangkit.b21cap0475.iddr.viewmodel.DetailViewModel
+import com.project.bangkit.cap0475.iddr.databinding.ActivityDetailBinding
+import com.project.bangkit.cap0475.iddr.model.data.ReportEntity
+import com.project.bangkit.cap0475.iddr.viewmodel.DetailViewModel
 
 class DetailActivity : AppCompatActivity() {
 

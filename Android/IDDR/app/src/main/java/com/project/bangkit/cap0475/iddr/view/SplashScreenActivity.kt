@@ -1,4 +1,4 @@
-package com.project.bangkit.b21cap0475.iddr.view
+package com.project.bangkit.cap0475.iddr.view
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.WindowManager
-import com.project.bangkit.b21cap0475.iddr.R
+import com.project.bangkit.cap0475.iddr.R
 
 class SplashScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

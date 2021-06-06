@@ -1,4 +1,4 @@
-package com.project.bangkit.b21cap0475.iddr
+package com.project.bangkit.cap0475.iddr
 
 import org.junit.Test
 
