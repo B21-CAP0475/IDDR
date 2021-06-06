@@ -26,9 +26,6 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
@@ -70,6 +67,7 @@ class DetectActivity : AppCompatActivity(), View.OnClickListener {
             resultCode == Activity.RESULT_OK
         ) {
             setViewAndDetect(getCapturedImage())
+            binding.sendResult.visibility = View.VISIBLE
         }
     }
 
@@ -109,8 +107,6 @@ class DetectActivity : AppCompatActivity(), View.OnClickListener {
         //TODO: Add object detection code here
         val image = TensorImage.fromBitmap(bitmap)
         val options = ObjectDetector.ObjectDetectorOptions.builder()
-            .setMaxResults(5)
-            .setScoreThreshold(0.5f)
             .build()
         val detector = ObjectDetector.createFromFileAndOptions(
             this, // the application context
@@ -148,7 +144,9 @@ class DetectActivity : AppCompatActivity(), View.OnClickListener {
         // Run ODT and display result
         // Note that we run this in the background thread to avoid blocking the app UI because
         // TFLite object detection is a synchronised process.
-        lifecycleScope.launch(Dispatchers.Default) { runObjectDetection(bitmap) }
+        lifecycleScope.launch(Dispatchers.Default) {
+            runObjectDetection(bitmap)
+        }
     }
 
     /**
@@ -156,9 +154,6 @@ class DetectActivity : AppCompatActivity(), View.OnClickListener {
      *      Decodes and crops the captured image from camera.
      */
     private fun getCapturedImage(): Bitmap {
-        // Get the dimensions of the View
-        val targetW: Int = binding.imageView.width
-        val targetH: Int = binding.imageView.height
 
         val bmOptions = BitmapFactory.Options().apply {
             BitmapFactory.decodeFile(currentPhotoPath, this)
@@ -178,18 +173,6 @@ class DetectActivity : AppCompatActivity(), View.OnClickListener {
         })
     }
 
-    /**
-     * rotateImage():
-     *     Decodes and crops the captured image from camera.
-     */
-    private fun rotateImage(source: Bitmap, angle: Float): Bitmap {
-        val matrix = Matrix()
-        matrix.postRotate(angle)
-        return Bitmap.createBitmap(
-            source, 0, 0, source.width, source.height,
-            matrix, true
-        )
-    }
 
     /**
      * createImageFile():
@@ -229,7 +212,7 @@ class DetectActivity : AppCompatActivity(), View.OnClickListener {
                 photoFile?.also {
                     val photoURI: Uri = FileProvider.getUriForFile(
                         this,
-                        "org.tensorflow.codelabs.objectdetection.fileprovider",
+                        "com.project.bangkit.b21cap0475.iddr.fileprovider",
                         it
                     )
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
