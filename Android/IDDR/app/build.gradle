@@ -9,7 +9,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.project.bangkit.cap0475.iddr"
+        applicationId "com.project.bangkit21.cap0475.iddr"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1

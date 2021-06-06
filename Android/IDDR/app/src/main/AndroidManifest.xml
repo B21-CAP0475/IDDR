@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.project.bangkit.cap0475.iddr">
+    package="com.project.bangkit21.cap0475.iddr">
 
     <queries>
         <intent>
@@ -17,14 +17,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.IDDR">
-        <activity android:name="com.project.bangkit.cap0475.iddr.view.DetailActivity"></activity>
-        <activity android:name="com.project.bangkit.cap0475.iddr.view.LoginActivity" />
+        <activity android:name="com.project.bangkit21.cap0475.iddr.view.DetailActivity"></activity>
+        <activity android:name="com.project.bangkit21.cap0475.iddr.view.LoginActivity" />
         <activity
-            android:name="com.project.bangkit.cap0475.iddr.view.DetectActivity"
+            android:name="com.project.bangkit21.cap0475.iddr.view.DetectActivity"
             android:screenOrientation="portrait" />
-        <activity android:name="com.project.bangkit.cap0475.iddr.view.MainActivity" />
+        <activity android:name="com.project.bangkit21.cap0475.iddr.view.MainActivity" />
         <activity
-            android:name="com.project.bangkit.cap0475.iddr.view.SplashScreenActivity"
+            android:name="com.project.bangkit21.cap0475.iddr.view.SplashScreenActivity"
             android:theme="@style/Theme.IDDR.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,7 +35,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.project.bangkit.cap0475.iddr.fileprovider"
+            android:authorities="com.project.bangkit21.cap0475.iddr.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
