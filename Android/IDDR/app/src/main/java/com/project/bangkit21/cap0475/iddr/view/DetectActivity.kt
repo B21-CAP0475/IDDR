@@ -16,20 +16,31 @@
 
 package com.project.bangkit21.cap0475.iddr.view
 
+import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.*
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
@@ -52,25 +63,44 @@ import java.util.*
 
 class DetectActivity : AppCompatActivity(), View.OnClickListener {
     companion object {
-        const val TAG = "TFLite - ODT"
+        private const val TAG = "TFLite - ODT"
         const val REQUEST_IMAGE_CAPTURE: Int = 1
+        private const val INTENT_CONFIRMATION = 100
         private const val MAX_FONT_SIZE = 50F
     }
 
     private lateinit var binding: ActivityDetectBinding
     private lateinit var currentPhotoPath: String
     private lateinit var photoUri: Uri
-    private val db: FirebaseFirestore = FirebaseFirestore.getInstance();
+    private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var userEmail: String
+    private var latitude: Double = 0.0
+    private var longitude: Double = 0.0
     private val dataList = arrayListOf<String>()
+    private lateinit var locationManager : LocationManager
+    private lateinit var locationListener : LocationListener
     private val storageRef: StorageReference =
         FirebaseStorage.getInstance().reference.child("images/${UUID.randomUUID()}")
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetectBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            showAlertLocation()
+        }
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this@DetectActivity)
+
+        locationListener = object : LocationListener {
+            override fun onLocationChanged(location: Location) {
+                latitude = location.latitude
+                longitude = location.longitude
+            }
+        }
 
         firebaseAuth = FirebaseAuth.getInstance()
         userEmail = firebaseAuth.currentUser?.email.toString()
@@ -82,14 +112,42 @@ class DetectActivity : AppCompatActivity(), View.OnClickListener {
         binding.sendResult.setOnClickListener(this)
     }
 
+    private fun showAlertLocation() {
+        val dialog = AlertDialog.Builder(this)
+        dialog.setMessage("Harap aktifkan GPS kamu sebelum mengambil foto.")
+        dialog.setPositiveButton("Settings") { _, _ ->
+            val myIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+            startActivity(myIntent)
+        }
+        dialog.setNegativeButton("Cancel") { _, _ ->
+            finish()
+        }
+        dialog.setCancelable(false)
+        dialog.show()
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE &&
             resultCode == Activity.RESULT_OK
         ) {
             setViewAndDetect(getCapturedImage())
-            binding.sendResult.visibility = View.VISIBLE
+            checkLocation()
         }
+        else if (requestCode == INTENT_CONFIRMATION) {
+            startActivity(data)
+        }
+    }
+
+    private fun checkLocation() {
+        try {
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener)
+            binding.sendResult.visibility = View.VISIBLE
+        } catch (e : Exception) {
+            Toast.makeText(this, "${e.message}", Toast.LENGTH_SHORT).show()
+        }
+
+
     }
 
     /**
@@ -152,6 +210,10 @@ class DetectActivity : AppCompatActivity(), View.OnClickListener {
             report["label"] = dataList
             report["time"] = timeActual
             report["image"] = downloadUri.toString()
+            report["location"] = mapOf(
+                "latitude" to latitude,
+                "longitude" to longitude
+            )
 
             val dbDoc = db.collection("users").document(userEmail).collection("reports")
 
@@ -160,7 +222,7 @@ class DetectActivity : AppCompatActivity(), View.OnClickListener {
             ).addOnSuccessListener {
                 progressBarLoading(false)
                 Toast.makeText(this, "Laporan berhasil dikirim!", Toast.LENGTH_SHORT).show()
-                finish()
+                startActivityForResult(Intent(this@DetectActivity, FusedLocationActivity::class.java), INTENT_CONFIRMATION)
             }.addOnFailureListener {
                 Toast.makeText(this, "Laporan gagal dikirim ${it.message}", Toast.LENGTH_SHORT)
                     .show()
@@ -172,7 +234,6 @@ class DetectActivity : AppCompatActivity(), View.OnClickListener {
 
 
     }
-
 
     private fun progressBarLoading(value: Boolean) {
         if (value) {
