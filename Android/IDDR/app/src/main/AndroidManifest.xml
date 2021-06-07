@@ -9,6 +9,10 @@
     </queries>
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -17,14 +21,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.IDDR">
-        <activity android:name="com.project.bangkit21.cap0475.iddr.view.DetailActivity"></activity>
-        <activity android:name="com.project.bangkit21.cap0475.iddr.view.LoginActivity" />
+        <activity android:name=".view.DetailActivity" />
+        <activity android:name=".view.LoginActivity" />
         <activity
-            android:name="com.project.bangkit21.cap0475.iddr.view.DetectActivity"
+            android:name=".view.DetectActivity"
             android:screenOrientation="portrait" />
-        <activity android:name="com.project.bangkit21.cap0475.iddr.view.MainActivity" />
+        <activity android:name=".view.MainActivity" />
         <activity
-            android:name="com.project.bangkit21.cap0475.iddr.view.SplashScreenActivity"
+            android:name=".view.SplashScreenActivity"
             android:theme="@style/Theme.IDDR.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

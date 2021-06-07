@@ -26,11 +26,20 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
+import com.google.android.gms.tasks.Continuation
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import com.project.bangkit21.cap0475.iddr.R
 import com.project.bangkit21.cap0475.iddr.databinding.ActivityDetectBinding
+import com.project.bangkit21.cap0475.iddr.model.data.DetectionResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.tensorflow.lite.support.image.TensorImage
@@ -39,6 +48,7 @@ import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class DetectActivity : AppCompatActivity(), View.OnClickListener {
     companion object {
@@ -49,16 +59,27 @@ class DetectActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityDetectBinding
     private lateinit var currentPhotoPath: String
+    private lateinit var photoUri: Uri
+    private val db: FirebaseFirestore = FirebaseFirestore.getInstance();
+    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var userEmail: String
+    private val dataList = arrayListOf<String>()
+    private val storageRef: StorageReference =
+        FirebaseStorage.getInstance().reference.child("images/${UUID.randomUUID()}")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetectBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        firebaseAuth = FirebaseAuth.getInstance()
+        userEmail = firebaseAuth.currentUser?.email.toString()
+
         binding.captureImageFab.setOnClickListener(this)
         binding.imgSampleOne.setOnClickListener(this)
         binding.imgSampleTwo.setOnClickListener(this)
         binding.imgSampleThree.setOnClickListener(this)
+        binding.sendResult.setOnClickListener(this)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -94,8 +115,77 @@ class DetectActivity : AppCompatActivity(), View.OnClickListener {
                 setViewAndDetect(getSampleImage(R.drawable.jalanrusak3))
             }
             R.id.sendResult -> {
-////                lifecycleScope.launch(Dispatchers.Default) { runObjectDetection(photoResult) }
+                uploadImage()
             }
+        }
+    }
+
+    private fun uploadImage() {
+        progressBarLoading(true)
+
+        storageRef.putFile(photoUri).continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
+            if (!task.isSuccessful) {
+                task.exception?.let { exception ->
+                    throw exception
+                }
+            }
+            return@Continuation storageRef.downloadUrl
+        }).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val downloadUri = task.result
+                downloadUri?.let { sendData(it) }
+            }
+        }
+    }
+
+    private fun getDateTime(l: Long) : String? {
+        val sfd = SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        return sfd.format(Date(l))
+    }
+
+    private fun sendData(downloadUri : Uri) {
+        storageRef.metadata.addOnSuccessListener { metadata ->
+            val timePhoto = metadata.creationTimeMillis
+            val timeActual = getDateTime(timePhoto).toString()
+
+            val report: MutableMap<String, Any> = HashMap()
+            report["label"] = dataList
+            report["time"] = timeActual
+            report["image"] = downloadUri.toString()
+
+            val dbDoc = db.collection("users").document(userEmail).collection("reports")
+
+            dbDoc.add(
+                report
+            ).addOnSuccessListener {
+                progressBarLoading(false)
+                Toast.makeText(this, "Laporan berhasil dikirim!", Toast.LENGTH_SHORT).show()
+                finish()
+            }.addOnFailureListener {
+                Toast.makeText(this, "Laporan gagal dikirim ${it.message}", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }.addOnFailureListener {
+            Toast.makeText(this, "Gagal mendapatkan metadata ${it.message}", Toast.LENGTH_SHORT)
+                .show()
+        }
+
+
+    }
+
+
+    private fun progressBarLoading(value: Boolean) {
+        if (value) {
+            binding.progressBar.visibility = View.VISIBLE
+            binding.tvDescription.text = "Harap tunggu.."
+            binding.llSampleImage.visibility = View.GONE
+            binding.captureImageFab.isEnabled = false
+            binding.sendResult.isEnabled = false
+        } else {
+            binding.progressBar.visibility = View.GONE
+            binding.tvDescription.text = "Berhasil!"
+            binding.captureImageFab.isEnabled = true
+            binding.sendResult.isEnabled = true
         }
     }
 
@@ -103,7 +193,7 @@ class DetectActivity : AppCompatActivity(), View.OnClickListener {
      * runObjectDetection(bitmap: Bitmap)
      *      TFLite Object Detection function
      */
-    private fun runObjectDetection(bitmap: Bitmap)  {
+    private fun runObjectDetection(bitmap: Bitmap) {
         //TODO: Add object detection code here
         val image = TensorImage.fromBitmap(bitmap)
         val options = ObjectDetector.ObjectDetectorOptions.builder()
@@ -129,7 +219,6 @@ class DetectActivity : AppCompatActivity(), View.OnClickListener {
             binding.imageView.setImageBitmap(imgWithResult)
         }
     }
-
 
 
     /**
@@ -215,6 +304,7 @@ class DetectActivity : AppCompatActivity(), View.OnClickListener {
                         "com.project.bangkit21.cap0475.iddr.fileprovider",
                         it
                     )
+                    photoUri = photoURI
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                     startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
                 }
@@ -233,18 +323,17 @@ class DetectActivity : AppCompatActivity(), View.OnClickListener {
         val outputBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
         val canvas = Canvas(outputBitmap)
         val pen = Paint()
-        val dataList = arrayListOf<String>()
         pen.textAlign = Paint.Align.LEFT
 
         detectionResults.forEach {
-            dataList.add(it.textLabel)
+            dataList.add(it.text)
             // draw bounding box
             pen.color = Color.RED
             pen.strokeWidth = 8F
             pen.style = Paint.Style.STROKE
             val box = it.boundingBox
             canvas.drawRect(box, pen)
-            
+
             val tagSize = Rect(0, 0, 0, 0)
 
             // calculate the right font size
@@ -270,9 +359,3 @@ class DetectActivity : AppCompatActivity(), View.OnClickListener {
         return outputBitmap
     }
 }
-
-/**
- * DetectionResult
- *      A class to store the visualization info of a detected object.
- */
-data class DetectionResult(val boundingBox: RectF, val text: String, val textLabel: String)
