@@ -95,7 +95,33 @@
         app:layout_constraintBottom_toBottomOf="@id/iv_time"
         tools:text="Time" />
 
+    <ImageView
+        android:id="@+id/iv_user"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_baseline_account_circle_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_time"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        app:tint="@color/blue_second" />
+
+    <TextView
+        android:id="@+id/tv_email_user"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserratlight"
+        android:textColor="@color/blue_second"
+        android:textSize="14sp"
+        android:layout_marginStart="5dp"
+        app:layout_constraintStart_toEndOf="@id/iv_user"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/iv_user"
+        app:layout_constraintBottom_toBottomOf="@id/iv_user"
+        tools:text="Email" />
+
     <Button
+        android:id="@+id/btn_show_location"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"

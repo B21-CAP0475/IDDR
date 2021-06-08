@@ -297,7 +297,7 @@ class DetectActivity : AppCompatActivity(), View.OnClickListener {
             reportEntity.longitude = longitude
             reportEntity.address = address
             reportEntity.time = timeActual
-            reportEntity.email = userEmail
+            reportEntity.user = userEmail
 
             intent.putExtra(ReportActivity.DATA_REPORTED, reportEntity)
             progressBarLoading(false)

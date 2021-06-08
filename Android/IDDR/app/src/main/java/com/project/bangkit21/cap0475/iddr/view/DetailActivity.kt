@@ -1,5 +1,7 @@
 package com.project.bangkit21.cap0475.iddr.view
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -25,6 +27,13 @@ class DetailActivity : AppCompatActivity() {
         if (extras != null) {
             populateView(extras)
         }
+
+        binding.btnShowLocation.setOnClickListener {
+            val gmmIntentUri = Uri.parse("geo:0,0?q=${extras?.address}")
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            startActivity(mapIntent)
+        }
     }
 
     private fun populateView(extras: ReportEntity?) {
@@ -38,6 +47,7 @@ class DetailActivity : AppCompatActivity() {
         binding.tvDescDetail.text = "Kerusakan jalan dengan klasifikasi ${extras?.label}"
         binding.tvLocation.text = extras?.address
         binding.tvTime.text = extras?.time
+        binding.tvEmailUser.text = extras?.user
     }
 
 

@@ -12,5 +12,5 @@ data class ReportEntity (
     var longitude: Double? = 0.0,
     var address: String? = "",
     var time: String? ="",
-    var email: String? ="",
+    var user: String? ="",
 ) : Parcelable
