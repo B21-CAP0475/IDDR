@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_bg"
+    tools:context=".view.ReportActivity">
+
+
+    <include layout="@layout/layout_header_confirm"
+        android:id="@+id/include_confirm_header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_confirm_image"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/jalanrusak2"
+        app:layout_constraintTop_toBottomOf="@id/include_confirm_header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@null" />
+
+    <TextView
+        android:id="@+id/tv_title_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:padding="16dp"
+        android:fontFamily="@font/montserratmedium"
+        app:layout_constraintTop_toBottomOf="@id/iv_confirm_image"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@android:color/secondary_text_light"
+        android:text="Label Informasi" />
+
+    <TextView
+        android:id="@+id/tv_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:fontFamily="@font/montserratregular"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@android:color/secondary_text_light"
+        tools:text="Label Informasi"/>
+
+    <TextView
+        android:id="@+id/tv_title_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:fontFamily="@font/montserratmedium"
+        app:layout_constraintTop_toBottomOf="@id/tv_label"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@android:color/secondary_text_light"
+        android:text="Lokasi" />
+
+    <TextView
+        android:id="@+id/tv_location"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:fontFamily="@font/montserratregular"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_location"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@android:color/secondary_text_light"
+        tools:text="Informasi Lokasi"/>
+
+    <TextView
+        android:id="@+id/tv_title_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:fontFamily="@font/montserratmedium"
+        app:layout_constraintTop_toBottomOf="@id/tv_location"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@android:color/secondary_text_light"
+        android:text="Waktu" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:fontFamily="@font/montserratregular"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_time"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@android:color/secondary_text_light"
+        tools:text="Informasi Waktu"/>
+
+    <Button
+        android:id="@+id/btn_confirm_send"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/blue_main"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/white"
+        android:text="Kirim Laporan"/>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

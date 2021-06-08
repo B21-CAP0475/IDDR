@@ -17,18 +17,22 @@
 package com.project.bangkit21.cap0475.iddr.view
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.*
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
-import android.location.LocationListener
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.os.Looper
 import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
@@ -36,21 +40,19 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import com.project.bangkit21.cap0475.iddr.R
 import com.project.bangkit21.cap0475.iddr.databinding.ActivityDetectBinding
 import com.project.bangkit21.cap0475.iddr.model.data.DetectionResult
+import com.project.bangkit21.cap0475.iddr.model.data.ReportEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.tensorflow.lite.support.image.TensorImage
@@ -67,21 +69,24 @@ class DetectActivity : AppCompatActivity(), View.OnClickListener {
         const val REQUEST_IMAGE_CAPTURE: Int = 1
         private const val INTENT_CONFIRMATION = 100
         private const val MAX_FONT_SIZE = 50F
+        private const val PERMISSION_REQUEST_ACCESS_FINE_LOCATION = 200
     }
 
     private lateinit var binding: ActivityDetectBinding
+
     private lateinit var currentPhotoPath: String
-    private lateinit var photoUri: Uri
-    private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-    private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var userEmail: String
+    private lateinit var userId: String
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
     private val dataList = arrayListOf<String>()
-    private lateinit var locationManager : LocationManager
-    private lateinit var locationListener : LocationListener
+
+    private lateinit var photoUri: Uri
+    private lateinit var firebaseAuth: FirebaseAuth
+
     private val storageRef: StorageReference =
         FirebaseStorage.getInstance().reference.child("images/${UUID.randomUUID()}")
+
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,20 +94,12 @@ class DetectActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityDetectBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
-        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            showAlertLocation()
-        }
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this@DetectActivity)
 
-        locationListener = object : LocationListener {
-            override fun onLocationChanged(location: Location) {
-                latitude = location.latitude
-                longitude = location.longitude
-            }
-        }
+        getLastLocation()
 
         firebaseAuth = FirebaseAuth.getInstance()
+        userId = firebaseAuth.currentUser?.uid.toString()
         userEmail = firebaseAuth.currentUser?.email.toString()
 
         binding.captureImageFab.setOnClickListener(this)
@@ -110,6 +107,100 @@ class DetectActivity : AppCompatActivity(), View.OnClickListener {
         binding.imgSampleTwo.setOnClickListener(this)
         binding.imgSampleThree.setOnClickListener(this)
         binding.sendResult.setOnClickListener(this)
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getLastLocation() {
+        if (checkPermissions()) {
+            if (isLocationEnabled()) {
+
+                fusedLocationClient.lastLocation.addOnCompleteListener(this) { task ->
+                    val location: Location? = task.result
+                    if (location == null) {
+                        requestNewLocationData()
+                    } else {
+                        latitude = location.latitude
+                        longitude = location.longitude
+                    }
+                }
+            } else {
+                showAlertLocation()
+            }
+        } else {
+            requestPermissions()
+        }
+    }
+
+
+    @SuppressLint("MissingPermission")
+    private fun requestNewLocationData() {
+        val mLocationRequest = LocationRequest()
+        mLocationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        mLocationRequest.interval = 0
+        mLocationRequest.fastestInterval = 0
+        mLocationRequest.numUpdates = 1
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        fusedLocationClient.requestLocationUpdates(
+            mLocationRequest, mLocationCallback,
+            Looper.myLooper()
+        )
+    }
+
+    private val mLocationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult) {
+            val mLastLocation: Location = locationResult.lastLocation
+            latitude = mLastLocation.latitude
+            longitude = mLastLocation.longitude
+        }
+    }
+
+
+    private fun isLocationEnabled(): Boolean {
+        val locationManager: LocationManager =
+            getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
+            LocationManager.NETWORK_PROVIDER
+        )
+    }
+
+    private fun checkPermissions(): Boolean {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            return true
+        }
+        return false
+    }
+
+    private fun requestPermissions() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ),
+            PERMISSION_REQUEST_ACCESS_FINE_LOCATION
+        )
+    }
+
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == PERMISSION_REQUEST_ACCESS_FINE_LOCATION) {
+            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                getLastLocation()
+            }
+        }
     }
 
     private fun showAlertLocation() {
@@ -132,22 +223,10 @@ class DetectActivity : AppCompatActivity(), View.OnClickListener {
             resultCode == Activity.RESULT_OK
         ) {
             setViewAndDetect(getCapturedImage())
-            checkLocation()
-        }
-        else if (requestCode == INTENT_CONFIRMATION) {
+            binding.sendResult.visibility = View.VISIBLE
+        } else if (requestCode == INTENT_CONFIRMATION) {
             startActivity(data)
         }
-    }
-
-    private fun checkLocation() {
-        try {
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener)
-            binding.sendResult.visibility = View.VISIBLE
-        } catch (e : Exception) {
-            Toast.makeText(this, "${e.message}", Toast.LENGTH_SHORT).show()
-        }
-
-
     }
 
     /**
@@ -181,14 +260,15 @@ class DetectActivity : AppCompatActivity(), View.OnClickListener {
     private fun uploadImage() {
         progressBarLoading(true)
 
-        storageRef.putFile(photoUri).continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
-            if (!task.isSuccessful) {
-                task.exception?.let { exception ->
-                    throw exception
+        storageRef.putFile(photoUri)
+            .continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
+                if (!task.isSuccessful) {
+                    task.exception?.let { exception ->
+                        throw exception
+                    }
                 }
-            }
-            return@Continuation storageRef.downloadUrl
-        }).addOnCompleteListener { task ->
+                return@Continuation storageRef.downloadUrl
+            }).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val downloadUri = task.result
                 downloadUri?.let { sendData(it) }
@@ -196,42 +276,38 @@ class DetectActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun getDateTime(l: Long) : String? {
+    private fun getDateTime(l: Long): String? {
         val sfd = SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         return sfd.format(Date(l))
     }
 
-    private fun sendData(downloadUri : Uri) {
+    private fun sendData(downloadUri: Uri) {
+        val address = getAddress(latitude, longitude)
+
         storageRef.metadata.addOnSuccessListener { metadata ->
             val timePhoto = metadata.creationTimeMillis
             val timeActual = getDateTime(timePhoto).toString()
+            val reportEntity = ReportEntity()
+            val intent = Intent(this@DetectActivity, ReportActivity::class.java)
 
-            val report: MutableMap<String, Any> = HashMap()
-            report["label"] = dataList
-            report["time"] = timeActual
-            report["image"] = downloadUri.toString()
-            report["location"] = mapOf(
-                "latitude" to latitude,
-                "longitude" to longitude
-            )
+            reportEntity.id = userId
+            reportEntity.label = dataList.toString()
+            reportEntity.image = downloadUri.toString()
+            reportEntity.latitude = latitude
+            reportEntity.longitude = longitude
+            reportEntity.address = address
+            reportEntity.time = timeActual
+            reportEntity.email = userEmail
 
-            val dbDoc = db.collection("users").document(userEmail).collection("reports")
+            intent.putExtra(ReportActivity.DATA_REPORTED, reportEntity)
+            progressBarLoading(false)
+            Toast.makeText(this, "Silahkan konfirmasi laporan.", Toast.LENGTH_SHORT).show()
 
-            dbDoc.add(
-                report
-            ).addOnSuccessListener {
-                progressBarLoading(false)
-                Toast.makeText(this, "Laporan berhasil dikirim!", Toast.LENGTH_SHORT).show()
-                startActivityForResult(Intent(this@DetectActivity, FusedLocationActivity::class.java), INTENT_CONFIRMATION)
-            }.addOnFailureListener {
-                Toast.makeText(this, "Laporan gagal dikirim ${it.message}", Toast.LENGTH_SHORT)
-                    .show()
-            }
+            startActivityForResult(intent, INTENT_CONFIRMATION)
         }.addOnFailureListener {
             Toast.makeText(this, "Gagal mendapatkan metadata ${it.message}", Toast.LENGTH_SHORT)
                 .show()
         }
-
 
     }
 
@@ -418,5 +494,22 @@ class DetectActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         return outputBitmap
+    }
+
+    private fun getAddress(lat: Double?, long: Double?): String {
+        val geocoder = Geocoder(this, Locale.getDefault())
+        val addresses: List<Address>?
+        val address: Address?
+        var addressText = ""
+
+        addresses = geocoder.getFromLocation(lat!!, long!!, 1)
+
+        if (addresses.isNotEmpty()) {
+            address = addresses[0]
+            addressText = address.getAddressLine(0)
+        } else {
+            addressText = "Jalan tidak ditemukan"
+        }
+        return addressText
     }
 }

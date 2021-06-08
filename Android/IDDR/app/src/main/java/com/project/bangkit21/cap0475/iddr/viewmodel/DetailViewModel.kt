@@ -11,15 +11,15 @@ class DetailViewModel : ViewModel() {
         this.id = id
     }
 
-    fun getSelectedReport() : ReportEntity {
-        lateinit var reports : ReportEntity
+//    fun getSelectedReport() : ReportEntity {
+//        lateinit var reports : ReportEntity
 
-        val reportGenerate = DataDummy.generateDummyReport()
+//        val reportGenerate = DataDummy.generateDummyReport()
 
-        for (report in reportGenerate) {
-            if (report.id.toString() == id) reports = report
-        }
-
-        return reports
-    }
+//        for (report in reportGenerate) {
+//            if (report.id.toString() == id) reports = report
+//        }
+//
+//        return reports
+//    }
 }

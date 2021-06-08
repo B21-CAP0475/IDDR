@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/iv_poster_movie_image"
+            android:id="@+id/iv_report_image"
             android:layout_width="80dp"
             android:layout_height="70dp"
             android:src="@drawable/jalanrusak1"
@@ -70,11 +70,14 @@
 
     <TextView
         android:id="@+id/tv_location"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserratlight"
         android:textColor="@color/blue_third"
         android:textSize="10sp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:singleLine="true"
         android:layout_marginStart="5dp"
         app:layout_constraintStart_toEndOf="@id/iv_location"
         app:layout_constraintEnd_toStartOf="@id/iv_time"
@@ -100,6 +103,9 @@
         android:fontFamily="@font/montserratlight"
         android:textColor="@color/blue_third"
         android:textSize="10sp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:singleLine="true"
         android:layout_marginStart="5dp"
         app:layout_constraintStart_toEndOf="@id/iv_time"
         app:layout_constraintEnd_toEndOf="parent"

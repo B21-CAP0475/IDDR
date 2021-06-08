@@ -29,7 +29,6 @@
         app:layout_constraintStart_toStartOf="@id/tv_title_email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_title_email"
-        app:layout_constraintBottom_toTopOf="@id/tv_title_report"
         tools:text="alfidarmawan79@gmail.com"
         android:layout_marginStart="24dp"
         android:textColor="@color/blue_main"
@@ -37,34 +36,5 @@
         android:textSize="14sp"
         android:fontFamily="@font/montserratregular"/>
 
-    <TextView
-        android:id="@+id/tv_title_report"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_email"
-        android:text="Total Laporan"
-        android:textColor="@android:color/secondary_text_light"
-        android:layout_marginTop="30dp"
-        android:drawablePadding="4dp"
-        android:drawableStart="@drawable/ic_baseline_article_24"
-        android:drawableTint="@android:color/secondary_text_light"
-        android:textSize="16sp"
-        android:fontFamily="@font/montserratregular"/>
-
-    <TextView
-        android:id="@+id/tv_count_report"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/tv_title_report"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_title_report"
-        android:text="0"
-        android:layout_marginStart="24dp"
-        android:textColor="@color/blue_main"
-        android:layout_marginTop="6dp"
-        android:textSize="14sp"
-        android:fontFamily="@font/montserratregular"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,17 +6,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.project.bangkit21.cap0475.iddr.databinding.FragmentHomeBinding
+import com.project.bangkit21.cap0475.iddr.model.data.ReportEntity
 import com.project.bangkit21.cap0475.iddr.view.DetailActivity
 import com.project.bangkit21.cap0475.iddr.view.adapter.ReportAdapter
-import com.project.bangkit21.cap0475.iddr.viewmodel.ReportViewModel
 
 class HomeFragment : Fragment(), ReportAdapter.OnItemClickCallback {
 
     private lateinit var binding: FragmentHomeBinding
-
+    private val db : FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val queryCollection : CollectionReference = db.collection("reports")
+    private lateinit var reportAdapter: ReportAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,27 +36,53 @@ class HomeFragment : Fragment(), ReportAdapter.OnItemClickCallback {
         super.onViewCreated(view, savedInstanceState)
 
         if (activity != null) {
-            val reportsViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[ReportViewModel::class.java]
-            val report = reportsViewModel.getReport()
-            val reportAdapter = ReportAdapter()
+            setupData()
+//            val report = reportsViewModel.getReport()
+//            val reportAdapter = ReportAdapter()
 
-            with(reportAdapter) {
-                setReport(report)
-                setOnItemClickCallback(this@HomeFragment)
-            }
+//            with(reportAdapter) {
+//                setReport(report)
+//                setOnItemClickCallback(this@HomeFragment)
+//            }
 
-            with(binding.rvReports) {
-                layoutManager = LinearLayoutManager(context)
-                setHasFixedSize(true)
-                adapter = reportAdapter
-            }
+//            with(binding.rvReports) {
+//                layoutManager = LinearLayoutManager(context)
+//                setHasFixedSize(true)
+//                adapter = reportAdapter
+//            }
         }
     }
 
-    override fun onItemClicked(id: String) {
+    private fun setupData() {
+        val query : Query = queryCollection
+        val firestoreRecyclerOptions : FirestoreRecyclerOptions<ReportEntity> = FirestoreRecyclerOptions.Builder<ReportEntity>()
+            .setQuery(query, ReportEntity::class.java)
+            .build()
+
+        reportAdapter = ReportAdapter(firestoreRecyclerOptions)
+        reportAdapter.setOnItemClickCallback(this)
+
+        with(binding.rvReports) {
+            layoutManager = LinearLayoutManager(context)
+            setHasFixedSize(true)
+            adapter = reportAdapter
+        }
+    }
+
+    override fun onItemClicked(report: ReportEntity) {
         Intent(context, DetailActivity::class.java).also {
-            it.putExtra(DetailActivity.REPORT_ID, id)
+            it.putExtra(DetailActivity.REPORT_ID, report)
             context?.startActivity(it)
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        reportAdapter.startListening()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        reportAdapter.stopListening()
     }
 }

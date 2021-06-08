@@ -23,7 +23,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.IDDR">
-        <activity android:name=".view.FusedLocationActivity"></activity>
+        <activity android:name=".view.ReportActivity"></activity>
         <activity android:name=".view.DetailActivity" />
         <activity android:name=".view.LoginActivity" />
         <activity

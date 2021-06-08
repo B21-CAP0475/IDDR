@@ -6,5 +6,5 @@ import com.project.bangkit21.cap0475.iddr.model.utils.DataDummy
 
 class ReportViewModel : ViewModel() {
 
-    fun getReport() : List<ReportEntity> = DataDummy.generateDummyReport()
+//    fun getReport() : List<ReportEntity> = DataDummy.generateDummyReport()
 }

@@ -19,10 +19,10 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var firebaseAuth: FirebaseAuth
-
-    companion object {
-        private const val PERMISSION_REQUEST_ACCESS_FINE_LOCATION = 200
-    }
+//
+//    companion object {
+//        private const val PERMISSION_REQUEST_ACCESS_FINE_LOCATION = 200
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         firebaseAuth = FirebaseAuth.getInstance()
 
         checkUser()
-        checkLocationPermission()
+//        checkLocationPermission()
 
         if (savedInstanceState == null) {
             binding.bottomNavigationView.selectedItemId = R.id.home
@@ -60,30 +60,30 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                PERMISSION_REQUEST_ACCESS_FINE_LOCATION
-            )
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == PERMISSION_REQUEST_ACCESS_FINE_LOCATION) {
-            when (grantResults[0]) {
-                PackageManager.PERMISSION_DENIED -> Toast.makeText(this, "Harap izinkan akses lokasi", Toast.LENGTH_SHORT)
-                    .show()//Tell to user the need of grant permission
-            }
-        }
-    }
+//    private fun checkLocationPermission() {
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+//            != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(
+//                this,
+//                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+//                PERMISSION_REQUEST_ACCESS_FINE_LOCATION
+//            )
+//        }
+//    }
+//
+//    override fun onRequestPermissionsResult(
+//        requestCode: Int,
+//        permissions: Array<out String>,
+//        grantResults: IntArray
+//    ) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//        if (requestCode == PERMISSION_REQUEST_ACCESS_FINE_LOCATION) {
+//            when (grantResults[0]) {
+//                PackageManager.PERMISSION_DENIED -> Toast.makeText(this, "Harap izinkan akses lokasi", Toast.LENGTH_SHORT)
+//                    .show()//Tell to user the need of grant permission
+//            }
+//        }
+//    }
 
     private fun addFragment(fragment: Fragment) {
         supportFragmentManager
