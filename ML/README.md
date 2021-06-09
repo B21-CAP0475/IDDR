@@ -8,6 +8,8 @@ The images divided into 5 classes, namely:</br>
 4. D40 : 5627 images
 5. D44 : 5057 images
 
+![Road Damamage Type](https://github.com/B21-CAP0475/IDDR/blob/main/ML/assets/RoadDamageTypeDef.png)
+
 ## Object Detection API Documentation
 You can see the full documentation of object detection API in this link : https://tensorflow-object-detection-api-tutorial.readthedocs.io/en/latest/
 
