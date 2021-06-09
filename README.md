@@ -42,10 +42,13 @@ IDDR is your on-the-go solution for your on-the-road problem.
 - Android 5.0 Lolipop or newest is fine
 - Internet Connection
 - Location Services
+- Google Account (app requires sign in with google account)
 
 ### Screenshots
-
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+<br/>
+<p align="center">
+  <img src="assets_readme/1.jpg" height="500"></img>&nbsp; &nbsp;<img src="assets_readme/2.jpg" height="500">&nbsp; &nbsp;<img src="assets_readme/3.jpg" height="500">&nbsp; &nbsp;<img src="assets_readme/4.jpg" height="500">&nbsp; &nbsp;<img src="assets_readme/6.jpg" height="500">&nbsp; &nbsp;<img src="assets_readme/7.jpg" height="500">
+</p>
   
 ## Features
 
